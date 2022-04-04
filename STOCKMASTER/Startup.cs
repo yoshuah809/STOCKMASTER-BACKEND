@@ -36,7 +36,7 @@ namespace STOCKMASTER
 
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, DContext db)
         {
             app.UseCors(o =>
             {
@@ -52,6 +52,9 @@ namespace STOCKMASTER
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "STOCKMASTER v1"));
             }
+
+
+            db.Database.EnsureCreated();
 
             app.UseHttpsRedirection();
 
