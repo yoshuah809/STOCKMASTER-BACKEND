@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using STOCKMASTER.DataContext;
-using STOCKMASTER.Models;
+using STOCKMASTER.DB;
+using STOCKMASTER.StockMaster.Core;
 
 namespace STOCKMASTER.Controllers
 {
@@ -14,95 +14,53 @@ namespace STOCKMASTER.Controllers
     [ApiController]
     public class CategoryController : ControllerBase
     {
-        private readonly DContext _context;
+        private ICategoryServices _categoryServices;
 
-        public CategoryController(DContext context)
+        public CategoryController(ICategoryServices categoryServices)
         {
-            _context = context;
+            _categoryServices = categoryServices;
         }
 
         // GET: api/Category
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Category>>> GetCategories()
+        public ActionResult GetCategories()
         {
-            return await _context.Categories.ToListAsync();
+            return Ok(_categoryServices.GetCategories());
         }
 
         // GET: api/Category/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Category>> GetCategory(int id)
+        [HttpGet("{id}", Name = "GetCategory")]
+        public IActionResult GetCategory(int id)
         {
-            var category = await _context.Categories.FindAsync(id);
-
-            if (category == null)
-            {
-                return NotFound();
-            }
-
-            return category;
+            return Ok(_categoryServices.GetCategory(id));
         }
 
         // PUT: api/Category/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutCategory(int id, Category category)
+        [HttpPut]
+        public IActionResult EditCategory(Category category)
         {
-            if (id != category.CategoryID)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(category).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!CategoryExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
+            return Ok(_categoryServices.EditCategory(category));
         }
+
 
         // POST: api/Category
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Category>> PostCategory(Category category)
+        public IActionResult CreateCategory(Category category)
         {
-            _context.Categories.Add(category);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetCategory", new { id = category.CategoryID }, category);
+            var newCategory = _categoryServices.CreateCategory(category);
+            return CreatedAtRoute("GetCategory", new { newCategory.CategoryID }, newCategory);
         }
 
         // DELETE: api/Category/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteCategory(int id)
+        [HttpDelete]
+        public IActionResult DeleteCategory(Category category)
         {
-            var category = await _context.Categories.FindAsync(id);
-            if (category == null)
-            {
-                return NotFound();
-            }
-
-            _context.Categories.Remove(category);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
+            _categoryServices.DeleteCategory(category);
+            return Ok();
         }
 
-        private bool CategoryExists(int id)
-        {
-            return _context.Categories.Any(e => e.CategoryID == id);
-        }
     }
+
 }

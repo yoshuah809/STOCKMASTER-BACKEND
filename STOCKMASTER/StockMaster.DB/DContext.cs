@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using STOCKMASTER.Models;
 
 
-namespace STOCKMASTER.DataContext
+
+namespace STOCKMASTER.DB
 {
     public class DContext : DbContext
     {
@@ -19,7 +19,8 @@ namespace STOCKMASTER.DataContext
         protected override void OnModelCreating(ModelBuilder mb)
         {
             mb.Entity<Product>()
-                .HasOne<Category>(p => p.Category);
+                 .HasOne(p => p.Category);
+               
         }
     }
 }

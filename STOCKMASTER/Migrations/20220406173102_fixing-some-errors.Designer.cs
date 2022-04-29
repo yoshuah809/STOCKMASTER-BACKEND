@@ -10,8 +10,8 @@ using STOCKMASTER.DB;
 namespace STOCKMASTER.Migrations
 {
     [DbContext(typeof(DContext))]
-    [Migration("20220329140450_initialCreate")]
-    partial class initialCreate
+    [Migration("20220406173102_fixing-some-errors")]
+    partial class fixingsomeerrors
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -49,7 +49,7 @@ namespace STOCKMASTER.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("CategoryID")
+                    b.Property<int>("CategoryId")
                         .HasColumnType("int");
 
                     b.Property<DateTime?>("DateCreated")
@@ -72,7 +72,7 @@ namespace STOCKMASTER.Migrations
 
                     b.HasKey("ProdID");
 
-                    b.HasIndex("CategoryID");
+                    b.HasIndex("CategoryId");
 
                     b.ToTable("Products");
                 });
@@ -81,7 +81,7 @@ namespace STOCKMASTER.Migrations
                 {
                     b.HasOne("STOCKMASTER.Models.Category", "Category")
                         .WithMany()
-                        .HasForeignKey("CategoryID")
+                        .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

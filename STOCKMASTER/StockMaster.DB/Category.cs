@@ -1,9 +1,10 @@
-﻿using STOCKMASTER.Models;
+﻿
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace STOCKMASTER.Models
+namespace STOCKMASTER.DB
+
 {
     public class Category
     {
@@ -15,6 +16,6 @@ namespace STOCKMASTER.Models
        
         public DateTime? DateCreated { get; set; }
 
-        ICollection<Product> Products { get; set; }
+      
     }
 }

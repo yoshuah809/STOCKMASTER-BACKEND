@@ -10,8 +10,8 @@ using STOCKMASTER.DB;
 namespace STOCKMASTER.Migrations
 {
     [DbContext(typeof(DContext))]
-    [Migration("20220329140450_initialCreate")]
-    partial class initialCreate
+    [Migration("20220413163804_modifiedData3")]
+    partial class modifiedData3
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

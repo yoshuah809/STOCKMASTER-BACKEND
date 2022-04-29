@@ -5,7 +5,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
-using STOCKMASTER.DataContext;
+using STOCKMASTER.DB;
+using STOCKMASTER.StockMaster.Core;
 
 namespace STOCKMASTER
 {
@@ -23,6 +24,8 @@ namespace STOCKMASTER
         {
             services.AddCors();
             services.AddControllers();
+            services.AddTransient<IProductServices, ProductServices>();
+            services.AddTransient<ICategoryServices, CategoryServices>();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "STOCKMASTER", Version = "v1" });
